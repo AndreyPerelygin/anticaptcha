@@ -27,11 +27,9 @@ taskID saved in anticaptcha.taskID
 
 For check result of task u must to use method getTaskResult, example:
 	
-		result = anticaptcha.getTaskResult(taskID=task[1])
+	result = anticaptcha.getTaskResult(taskID=task[1])
 
 Default taskID = anticaptcha.taskID
 In response u`ll get tuple. If first element of tuple is True, then in second element will be SOLUTION element from API response, else in second element will be str with error description.
 
-U can to find more information about structure of request and response on official API documentation: 
-	
-	https://anticaptcha.atlassian.net/wiki/display/API/API+v.2+Documentation
+U can to find more information about structure of request and response on official API documentation: https://anticaptcha.atlassian.net/wiki/display/API/API+v.2+Documentation
