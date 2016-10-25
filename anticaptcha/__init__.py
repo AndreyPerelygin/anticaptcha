@@ -112,7 +112,7 @@ class AntiCaptcha():
 				else:
 					print ("Task in processing")
 					time.sleep(5)
-					self.getTaskResult(taskID=taskID)
+					return self.getTaskResult(taskID=taskID)
 			else:
 				return (False, response[1]["errorCode"]+" "+response[1]["errorDescription"])
 		else:
