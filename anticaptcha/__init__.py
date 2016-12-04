@@ -54,7 +54,7 @@ class AntiCaptcha():
 		self, 
 		websiteURL="", 
 		websiteKey="", 
-		use_prixy = False,
+		use_proxy = False,
 		proxyType="", 
 		proxyAddress="", 
 		proxyPort="", 
