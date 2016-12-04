@@ -92,7 +92,7 @@ class AntiCaptcha():
 				"clientKey":self.api_key,
 				"task":
 					{
-						"type":"NoCaptchaTask",
+						"type":"NoCaptchaTaskProxyless",
 						"websiteURL":websiteURL,
 						"websiteKey":websiteKey
 					},
