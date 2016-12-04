@@ -54,6 +54,7 @@ class AntiCaptcha():
 		self, 
 		websiteURL="", 
 		websiteKey="", 
+		use_prixy = False,
 		proxyType="", 
 		proxyAddress="", 
 		proxyPort="", 
@@ -64,23 +65,41 @@ class AntiCaptcha():
 		languagePool="en"
 		) -> tuple:
 
-		request_data = {
-		    "clientKey":self.api_key,
-		    "task":
-		        {
-		            "type":"NoCaptchaTask",
-		            "websiteURL":websiteURL,
-		            "websiteKey":websiteKey,
-		            "proxyType":proxyType,
-		            "proxyAddress":proxyAddress,
-		            "proxyPort":proxyPort,
-		            "proxyLogin":proxyLogin,
-		            "proxyPassword":proxyPassword,
-		            "userAgent":userAgent
-		        },
-		    "softId":softId,
-		    "languagePool":languagePool
-		}
+
+		if use_proxy:
+			
+			request_data = {
+				"clientKey":self.api_key,
+				"task":
+					{
+						"type":"NoCaptchaTask",
+						"websiteURL":websiteURL,
+						"websiteKey":websiteKey,
+						"proxyType":proxyType,
+						"proxyAddress":proxyAddress,
+						"proxyPort":proxyPort,
+						"proxyLogin":proxyLogin,
+						"proxyPassword":proxyPassword,
+						"userAgent":userAgent
+			        },
+				"softId":softId,
+				"languagePool":languagePool
+			}
+
+		else:
+
+			request_data = {
+				"clientKey":self.api_key,
+				"task":
+					{
+						"type":"NoCaptchaTask",
+						"websiteURL":websiteURL,
+						"websiteKey":websiteKey
+					},
+				"softId":softId,
+				"languagePool":languagePool
+			}
+
 
 		response = self._request(method="createTask", data=request_data)
 		if response[0] == True:
