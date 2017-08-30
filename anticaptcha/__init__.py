@@ -111,6 +111,46 @@ class AntiCaptcha():
 		else:
 			return (False, "Bad HTTP Code")
 
+	def createImageToTextTask(
+			self,
+			body,
+			phrase=False,
+			case=False,
+			math=False,
+			maxLength=0,
+			minLength=0,
+			numeric=False,
+			softId=0,
+			languagePool="en"
+	) -> tuple:
+
+		request_data = {
+			"clientKey": self.api_key,
+			"task":
+				{
+					"type": "ImageToTextTask",
+					"body": body,
+					"phrase": phrase,
+					"case": case,
+					"numeric": numeric,
+					"math": math,
+					"minLength": minLength,
+					"maxLength": maxLength
+				},
+			"softId": softId,
+			"languagePool": languagePool
+		}
+
+		response = self._request(method="createTask", data=request_data)
+		if response[0] == True:
+			if response[1]["errorId"] == 0:
+				self.taskID = response[1]["taskId"]
+				return (True, self.taskID)
+			else:
+				return (False, response[1]["errorCode"] + " " + response[1]["errorDescription"])
+		else:
+			return (False, "Bad HTTP Code")
+
 	def getTaskResult(
 		self, 
 		taskID=0,
@@ -127,12 +167,37 @@ class AntiCaptcha():
 		if response[0] == True:
 			if response[1]["errorId"] == 0:
 				if response[1]["status"] == "ready":
-					return (True, response[1]["solution"]["gRecaptchaResponse"])
+					try:
+						r = response[1]["solution"]["gRecaptchaResponse"]
+					except AttributeError:
+						r = response[1]["solution"]["text"]
+					return (True, r)
 				else:
 					print ("Task in processing")
 					time.sleep(5)
 					return self.getTaskResult(taskID=taskID)
 			else:
 				return (False, response[1]["errorCode"]+" "+response[1]["errorDescription"])
+		else:
+			return (False, "Bad HTTP Code")
+		return (False, "Bad HTTP Code")
+
+
+	def getBalance(self) -> tuple:
+		"""
+		 retrieve account balance
+		:return: Tuple 1. status: boolean
+		 			   2. balance: int
+		"""
+		request_data = {
+			"clientKey": self.api_key,
+		}
+
+		response = self._request(method="getBalance", data=request_data)
+		if response[0] == True:
+			if response[1]["errorId"] == 0:
+				return (True, response[1]["balance"])
+			else:
+				return (False, response[1]["errorCode"] + " " + response[1]["errorDescription"])
 		else:
 			return (False, "Bad HTTP Code")
